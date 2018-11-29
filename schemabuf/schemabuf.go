@@ -410,8 +410,10 @@ func parseColumn(s *Schema, msg *Message, col Column) error {
 		fieldType = "google.protobuf.Timestamp"
 	case "bool":
 		fieldType = "bool"
-	case "tinyint", "smallint", "int", "mediumint", "bigint":
+	case "tinyint", "smallint", "int":
 		fieldType = "int32"
+	case "mediumint", "bigint":
+		fieldType = "int64"
 	case "float", "decimal", "double":
 		fieldType = "float"
 	}
