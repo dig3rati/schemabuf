@@ -408,9 +408,9 @@ func parseColumn(s *Schema, msg *Message, col Column) error {
 		s.AppendImport("google/protobuf/timestamp.proto")
 
 		fieldType = "google.protobuf.Timestamp"
-	case "tinyint", "bool":
+	case "bool":
 		fieldType = "bool"
-	case "smallint", "int", "mediumint", "bigint":
+	case "tinyint", "smallint", "int", "mediumint", "bigint":
 		fieldType = "int32"
 	case "float", "decimal", "double":
 		fieldType = "float"
