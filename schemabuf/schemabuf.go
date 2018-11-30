@@ -380,6 +380,7 @@ type Column struct {
 // be added to the Schema. Returns an error if an incompatible protobuf data type cannot be found for the database column type.
 func parseColumn(s *Schema, msg *Message, col Column) error {
 	typ := strings.ToLower(col.DataType)
+	clen := col.CharacterMaximumLength
 	var fieldType string
 
 	switch typ {
@@ -411,7 +412,11 @@ func parseColumn(s *Schema, msg *Message, col Column) error {
 	case "bool":
 		fieldType = "bool"
 	case "tinyint", "smallint", "int":
-		fieldType = "int32"
+		if clen.Valid && clen.Int64 < 2 {
+			fieldType = "bool"
+		} else {
+			fieldType = "int32"
+		}
 	case "mediumint", "bigint":
 		fieldType = "int64"
 	case "float", "decimal", "double":
