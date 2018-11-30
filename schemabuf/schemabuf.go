@@ -412,6 +412,7 @@ func parseColumn(s *Schema, msg *Message, col Column) error {
 	case "bool":
 		fieldType = "bool"
 	case "tinyint", "smallint", "int":
+		log.Printf("Col: %v", col)
 		if clen.Valid && clen.Int64 < 2 {
 			fieldType = "bool"
 		} else {
