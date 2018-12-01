@@ -411,16 +411,24 @@ func parseColumn(s *Schema, msg *Message, col Column) error {
 		fieldType = "google.protobuf.Timestamp"
 	case "bool":
 		fieldType = "bool"
-	case "tinyint", "smallint", "int":
+	case "tinyint", "smallint":
 		if strings.Contains(ctype, "tinyint(1)") {
 			fieldType = "bool"
 		} else {
 			fieldType = "int32"
 		}
-	case "mediumint", "bigint":
+	case "int", "mediumint":
 		fieldType = "int64"
-	case "float", "decimal", "double":
-		fieldType = "float"
+	case "bigint":
+		s.AppendImport("common/extended_datatypes.proto")
+
+		fieldType = "common.dtypes.LargeInteger"
+	case "float":
+		fieldType = "double"
+	case "decimal", "double":
+		s.AppendImport("common/extended_datatypes.proto")
+
+		fieldType = "common.dtypes.LargeDecimal"
 	}
 
 	if "" == fieldType {
